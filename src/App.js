@@ -1,63 +1,60 @@
-import React from "react";
-import Weather from "./components/Weather";
-import Form from "./components/Form";
+import React from 'react';
+import Weather from './components/Weather';
+import Form from './components/Form';
 // import SWeather from "./components/stateless_weather";
 // import SForm from "./components/stateless_form"
-import Titles from "./components/Titles";
+import Titles from './components/Titles';
 
-const Api_Key = "68cea75b5b953c89fc1a227daa09b341";
+const Api_Key = '68cea75b5b953c89fc1a227daa09b341';
 
 class App extends React.Component {
-
   state = {
-
     temperature: undefined,
     city: undefined,
     country: undefined,
     humidity: undefined,
     description: undefined,
     error: undefined
-  }
+  };
 
   //getWeather is a method we'll use to make the api call
-  getWeather = async (e) => {
-
+  getWeather = async e => {
     const city = e.target.elements.city.value;
     const country = e.target.elements.country.value;
-    e.preventDefault();   
-    const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&unites=metric,${country}&appid=${Api_Key}`);
+    e.preventDefault();
+    const api_call = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&${country}&&units=imperial&appid=${Api_Key}`
+    );
     const response = await api_call.json();
     console.log(response);
-    if(city && country){
+    if (city && country) {
       this.setState({
         temperature: response.main.temp,
         city: response.name,
         country: response.sys.country,
         humidity: response.main.humidity,
         description: response.weather[0].description,
-        error: ""
-      })
-    }else{
+        error: ''
+      });
+    } else {
       this.setState({
-        error: "Please input search values..."
-      })
+        error: 'Please input search values...'
+      });
     }
-  }
+  };
 
   render() {
-
     return (
-
       <div>
-         <div className="wrapper">
-          <div className="main">
-            <div className="container">
-              <div className="row">
-                <div className="col-xs-5 title-container">
-                <Titles />
+        <div className='wrapper'>
+          <div className='main'>
+            <div className='container'>
+              <div className='row'>
+                <div className='col-xs-5 title-container'>
+                  <Titles />
                 </div>
-                <div className="col-xs-7 form-container">
-                <Form loadWeather={this.getWeather} />
+                <div className='col-xs-7 form-container'>
+                  <Form loadWeather={this.getWeather} />
                   <Weather
                     temperature={this.state.temperature}
                     city={this.state.city}
@@ -72,8 +69,7 @@ class App extends React.Component {
           </div>
         </div>
       </div>
-
-    )
+    );
   }
 }
 export default App;
